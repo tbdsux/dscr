@@ -6,6 +6,8 @@ A small screenshot tool for macOS, in the spirit of Linux Mint's Screenshot app.
 Pick what to capture, set a delay, and take the shot from the window, the menu bar or a global
 keyboard shortcut. The result opens in a preview where you can save it, copy it or throw it away.
 
+<p align="center"><img src="image.png" alt="The DScr window: capture modes, options and shortcuts" width="400"></p>
+
 ## Features
 
 - **Three capture modes:** the whole screen, a window (click the one you want), or a selection you drag out.
