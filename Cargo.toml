@@ -1,0 +1,12 @@
+[package]
+name = "dscr"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "A Linux Mint style screenshot tool for macOS, built with Rune"
+
+[dependencies]
+rune = { git = "https://github.com/anomalyco/rune", rev = "781e2b6d87cd5f32d6f4365956fad4baaf24ee50", features = ["native-file-dialog"] }
+rune-kit = { git = "https://github.com/anomalyco/rune", rev = "781e2b6d87cd5f32d6f4365956fad4baaf24ee50" }
+serde = "1"
+tray-icon = "0.26.1"
