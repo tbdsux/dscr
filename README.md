@@ -69,8 +69,11 @@ of your **terminal**, not DScr.
 ./scripts/bundle.sh
 ```
 
-This builds a release binary and wraps it in `target/DScr.app`. The bundle is ad-hoc signed,
-which needs no Apple Developer account. Then install it:
+This builds a release binary and wraps it in `target/DScr.app`, signed with the first code
+signing certificate in your keychain (a free Apple Development one from Xcode works). Set
+`DSCR_SIGN_IDENTITY` to pick another. With no certificate it falls back to an ad-hoc
+signature, which needs no Apple account but loses Screen Recording permission on every
+rebuild (see [Updating](#updating)). Then install it:
 
 ```sh
 cp -R target/DScr.app /Applications/
@@ -96,9 +99,11 @@ git pull
 ```
 
 Quit DScr from its menu, copy the new bundle over the old one in `/Applications`, and open it.
-Every build gets a new ad-hoc signature, so **macOS treats it as a new app**: Screen Recording
-may show DScr turned on but captures still come back as wallpaper. If so, select DScr in that
-list, remove it with **−**, and grant permission again on the next capture.
+Signed with a certificate, the permission carries over. With an ad-hoc signature, every build
+**looks like a new app to macOS**: Screen Recording may show DScr turned on, yet it asks again
+or captures come back as wallpaper. The same happens once when you switch from ad-hoc to a
+certificate, or when the certificate is renewed. Fix it with
+`tccutil reset ScreenCapture dev.tbdsux.dscr`, then grant permission again on the next capture.
 
 ### Uninstalling
 

@@ -33,8 +33,13 @@ cat > "$app/Contents/Info.plist" <<EOF
 EOF
 
 plutil -lint -s "$app/Contents/Info.plist"
-# Ad-hoc signature ("-"): no Apple Developer account needed, and macOS can track the
-# Screen Recording permission against the bundle.
-codesign --force --sign - "$app"
+# Sign with the first real identity in the keychain so the Screen Recording grant survives
+# rebuilds; an ad-hoc ("-") signature is pinned to the binary's hash and is re-prompted every build.
+identity=${DSCR_SIGN_IDENTITY:-$(security find-identity -v -p codesigning | awk 'NR==1 && $2 ~ /^[0-9A-F]{40}$/ {print $2}')}
+if [ -z "$identity" ]; then
+  identity=-
+  echo "warning: no signing identity found, using ad-hoc; Screen Recording will be re-requested after every rebuild" >&2
+fi
+codesign --force --sign "$identity" "$app"
 
 echo "Built $app"
