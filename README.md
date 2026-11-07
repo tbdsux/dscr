@@ -19,7 +19,7 @@ keyboard shortcut. The result opens in a preview where you can save it, copy it 
   - **Copy** puts the image on the clipboard and leaves the preview open.
   - **Cancel** closes it.
 - **Menu bar app:** launches straight into the menu bar with no window and no Dock icon.
-  Click the menu-bar icon to open the window; right-click it (or Control-click) for the menu:
+  Click the menu-bar icon for the menu:
   Open DScr, the three capture modes, and Quit. Closing the window keeps the app running.
 - **One instance:** launching it again brings up the running copy's settings window.
 - Liquid Glass styling on macOS 26 and later; light and dark mode follow the system.

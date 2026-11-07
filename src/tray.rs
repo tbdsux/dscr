@@ -24,7 +24,6 @@ fn tray_image() -> Vec<u8> {
 
 pub(crate) fn make_tray(handle: AppHandle<Main>) -> Result<tray_icon::TrayIcon, String> {
     use tray_icon::menu::{Menu, MenuEvent, MenuItem, PredefinedMenuItem};
-    use tray_icon::{MouseButton, MouseButtonState, TrayIconEvent};
     let item = |id: &str, title: &str| MenuItem::with_id(id, title, true, None);
     let menu = Menu::new();
     menu.append_items(&[
@@ -34,11 +33,6 @@ pub(crate) fn make_tray(handle: AppHandle<Main>) -> Result<tray_icon::TrayIcon, 
         &PredefinedMenuItem::separator(),
         &item("quit", "Quit DScr"),
     ]).map_err(|e| e.to_string())?;
-    // Left click opens the window; right (or control) click shows the menu.
-    let opener = handle.clone();
-    TrayIconEvent::set_event_handler(Some(move |e: TrayIconEvent| {
-        if let TrayIconEvent::Click { button: MouseButton::Left, button_state: MouseButtonState::Up, .. } = e { opener.open() }
-    }));
     MenuEvent::set_event_handler(Some(move |e: MenuEvent| {
         let id = e.id.0;
         handle.update(move |s: &mut Main, tx| match id.as_str() {
@@ -48,6 +42,6 @@ pub(crate) fn make_tray(handle: AppHandle<Main>) -> Result<tray_icon::TrayIcon, 
         });
     }));
     let icon = tray_icon::Icon::from_rgba(tray_image(), 36, 36).map_err(|e| e.to_string())?;
-    tray_icon::TrayIconBuilder::new().with_menu(Box::new(menu)).with_menu_on_left_click(false).with_icon_templated(icon)
+    tray_icon::TrayIconBuilder::new().with_menu(Box::new(menu)).with_icon_templated(icon)
         .with_tooltip("DScr").build().map_err(|e| e.to_string())
 }
