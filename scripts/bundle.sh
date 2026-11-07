@@ -8,8 +8,9 @@ cargo build --release
 version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -n 1)
 app=target/DScr.app
 rm -rf "$app"
-mkdir -p "$app/Contents/MacOS"
+mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp target/release/dscr "$app/Contents/MacOS/dscr"
+cp assets/AppIcon.icns "$app/Contents/Resources/AppIcon.icns"
 
 # LSUIElement keeps it out of the Dock from the very first frame; the app is menu-bar only.
 cat > "$app/Contents/Info.plist" <<EOF
@@ -21,6 +22,7 @@ cat > "$app/Contents/Info.plist" <<EOF
   <key>CFBundleDisplayName</key><string>DScr</string>
   <key>CFBundleIdentifier</key><string>dev.tbdsux.dscr</string>
   <key>CFBundleExecutable</key><string>dscr</string>
+  <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleShortVersionString</key><string>$version</string>
   <key>CFBundleVersion</key><string>$version</string>
