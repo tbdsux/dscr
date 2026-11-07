@@ -34,6 +34,7 @@ fn main() {
     handle.update(move |s, _| {
         // Built here, on the main thread once AppKit is running, as the status bar requires.
         s.tray = tray::make_tray(shared.clone()).map_err(|e| eprintln!("dscr: no menu-bar item: {e}")).ok();
+        if s.open_at_launch { shared.open() }
         s.handle = Some(shared);
         s.preview = Some(preview);
         for m in 0..3 {

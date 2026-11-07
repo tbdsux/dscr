@@ -18,7 +18,7 @@ keyboard shortcut. The result opens in a preview where you can save it, copy it 
   - **Save…** writes a PNG where you choose, then closes the preview.
   - **Copy** puts the image on the clipboard and leaves the preview open.
   - **Cancel** closes it.
-- **Menu bar app:** launches straight into the menu bar with no window and no Dock icon.
+- **Menu bar app:** launches straight into the menu bar with no window and no Dock icon (turn on **Open window at launch** to show the window too).
   Click the menu-bar icon for the menu:
   Open DScr, the three capture modes, and Quit. Closing the window keeps the app running.
 - **One instance:** launching it again brings up the running copy's settings window.

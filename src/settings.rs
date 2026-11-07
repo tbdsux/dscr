@@ -18,6 +18,7 @@ pub(crate) struct Main {
     pub(crate) mode: usize,
     pub(crate) pointer: bool,
     pub(crate) delay: u32,
+    pub(crate) open_at_launch: bool,
     pub(crate) recorders: [ShortcutRecorderState; 3],
     pub(crate) ids: [Option<ShortcutId>; 3],
     pub(crate) handle: Option<AppHandle<Main>>,
@@ -33,6 +34,7 @@ pub(crate) fn init_main() -> Main {
         mode: p.get::<usize>("mode").unwrap_or(0).min(2),
         pointer: p.get("pointer").unwrap_or(false),
         delay: p.get("delay").unwrap_or(0),
+        open_at_launch: p.get("open_at_launch").unwrap_or(false),
         recorders: [0, 1, 2].map(|i| ShortcutRecorderState::new(key(i).parse().ok())),
         ..Main::default()
     }
@@ -94,6 +96,9 @@ pub(crate) fn view_main(s: &Main, cx: &mut Cx<Main>) -> El {
             .child(Switch::new(s.pointer).label("Show pointer").hide_label()
                 .on_toggle(|s: &mut Main| { s.pointer = !s.pointer; save("pointer", &s.pointer) }).build(&k)),
         row().child(label("Delay")).child(spacer()).child(stepper),
+        row().child(label("Open window at launch")).child(spacer())
+            .child(Switch::new(s.open_at_launch).label("Open window at launch").hide_label()
+                .on_toggle(|s: &mut Main| { s.open_at_launch = !s.open_at_launch; save("open_at_launch", &s.open_at_launch) }).build(&k)),
     ]);
 
     let keys = group(&g, MODES.iter().enumerate().map(|(m, name)| {
