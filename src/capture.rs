@@ -29,12 +29,18 @@ pub(crate) fn capture(s: &mut Main, mode: usize, _: &mut Tx) {
         match std::fs::read(&path) {
             Ok(bytes) if ok && !bytes.is_empty() => {
                 let restore = was_visible.then(|| main.clone());
+                let (sent, decoded) = std::sync::mpsc::channel();
                 preview.update(move |p, _| {
                     p.image = p.cache.as_ref().map(|c| c.load(bytes));
+                    let _ = sent.send(p.image.clone());
                     p.path = path;
                     p.status.clear();
                     p.restore = restore;
                 });
+                // A full-screen shot takes long enough to decode that the view would lay out an
+                // empty box and never resize it: wait for the size, then re-run the view.
+                if let Ok(Some(img)) = decoded.recv() { let _ = img.wait(); }
+                preview.update(|_, _| {});
                 window.open();
             }
             // Escape in an interactive capture writes no file: just go back.
